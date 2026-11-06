@@ -1,0 +1,38 @@
+{
+  "id": "doublejump",
+  "name": "Double Jump System",
+  "description": "Give players a second chance in mid-air with a responsive, configurable double jump system.",
+  "thumbnail": "/images/doublejump.svg",
+  "category": "Movement",
+  "version": "1.0.0",
+  "tags": [
+    "Movement",
+    "Player",
+    "Client"
+  ],
+  "details": "A lightweight movement upgrade that tracks airborne jumps, resets cleanly on landing, and lets you tune the feel from one configuration module.",
+  "features": [
+    "Responsive mid-air input",
+    "Configurable jump power",
+    "Landing state reset"
+  ],
+  "scripts": [
+    {
+      "name": "DoubleJump.client.lua",
+      "description": "Input, jump state and landing reset.",
+      "path": "scripts/DoubleJump.client.lua"
+    },
+    {
+      "name": "Config.lua",
+      "description": "Tune the second jump without editing logic.",
+      "path": "scripts/Config.lua"
+    }
+  ],
+  "instructions": [
+    "Create a ModuleScript named Config inside ReplicatedStorage.",
+    "Place DoubleJump.client.lua in StarterPlayer > StarterPlayerScripts.",
+    "Adjust JumpPower in Config.lua and test with Play mode."
+  ],
+  "notes": "This example uses the default Humanoid jump system.",
+  "videoUrl": ""
+}

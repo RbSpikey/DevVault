@@ -1,0 +1,33 @@
+{
+  "id": "teleport-pad",
+  "name": "Teleport Pad",
+  "description": "A simple, reusable pad that safely moves players to a linked destination part.",
+  "thumbnail": "/images/teleport-pad.svg",
+  "category": "Gameplay",
+  "version": "1.0.0",
+  "tags": [
+    "Gameplay",
+    "Server",
+    "Utility"
+  ],
+  "details": "Connect pads with a Destination object value and let the server handle touches. A short debounce prevents repeated teleports while a character overlaps the pad.",
+  "features": [
+    "Server-side teleport",
+    "Per-character debounce",
+    "Easy destination setup"
+  ],
+  "scripts": [
+    {
+      "name": "Teleport.server.lua",
+      "description": "Detects pad touches and moves characters.",
+      "path": "scripts/Teleport.server.lua"
+    }
+  ],
+  "instructions": [
+    "Create a Part for the pad and add an ObjectValue named Destination pointing to the target Part.",
+    "Place this Script inside the pad Part.",
+    "Anchor both parts and ensure CanTouch is enabled."
+  ],
+  "notes": "Destination must reference a BasePart in Workspace.",
+  "videoUrl": ""
+}

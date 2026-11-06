@@ -1,0 +1,33 @@
+{
+  "id": "sprint-system",
+  "name": "Sprint System",
+  "description": "A clean hold-to-sprint controller with configurable speed and smooth transitions.",
+  "thumbnail": "/images/sprint-system.svg",
+  "category": "Movement",
+  "version": "1.2.0",
+  "tags": [
+    "Movement",
+    "Input",
+    "Client"
+  ],
+  "details": "A client-side sprint controller that responds to keyboard input, eases between movement speeds, and restores the default speed when the key is released.",
+  "features": [
+    "Hold Shift to sprint",
+    "Smooth speed transitions",
+    "Respawn-safe character binding"
+  ],
+  "scripts": [
+    {
+      "name": "Sprint.client.lua",
+      "description": "Sprint input and speed handling.",
+      "path": "scripts/Sprint.client.lua"
+    }
+  ],
+  "instructions": [
+    "Place Sprint.client.lua in StarterPlayer > StarterPlayerScripts.",
+    "Change WALK_SPEED and SPRINT_SPEED to fit your game.",
+    "For competitive games, validate movement limits on the server."
+  ],
+  "notes": "Input uses Left Shift by default.",
+  "videoUrl": ""
+}

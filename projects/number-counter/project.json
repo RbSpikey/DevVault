@@ -1,0 +1,33 @@
+{
+  "id": "number-counter",
+  "name": "Animated Number Counter",
+  "description": "Animate leaderboard values with a lightweight, reusable number tween utility.",
+  "thumbnail": "/images/number-counter.svg",
+  "category": "UI & UX",
+  "version": "1.0.0",
+  "tags": [
+    "UI",
+    "Animation",
+    "Utility"
+  ],
+  "details": "A small server-side helper that smoothly animates a player's displayed score when their value changes. It works well for coins, points and other leaderboard stats.",
+  "features": [
+    "Readable number transitions",
+    "Supports positive and negative changes",
+    "Simple leaderboard integration"
+  ],
+  "scripts": [
+    {
+      "name": "AnimatedCounter.server.lua",
+      "description": "Creates a score value and animates updates.",
+      "path": "scripts/AnimatedCounter.server.lua"
+    }
+  ],
+  "instructions": [
+    "Place the Script in ServerScriptService.",
+    "Replace the sample score update with your reward logic.",
+    "Use a client UI for per-player visual effects in production."
+  ],
+  "notes": "The example prints intermediate values; adapt the update callback to your UI.",
+  "videoUrl": ""
+}
