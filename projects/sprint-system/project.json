@@ -24,10 +24,13 @@
     }
   ],
   "instructions": [
-    "Place Sprint.client.lua in StarterPlayer > StarterPlayerScripts.",
-    "Change WALK_SPEED and SPRINT_SPEED to fit your game.",
-    "For competitive games, validate movement limits on the server."
-  ],
+  "In Roblox Studio, navigate to StarterPlayer > StarterPlayerScripts.",
+  "Insert a LocalScript and name it Sprint.",
+  "Copy the provided sprint system code into the LocalScript.",
+  "Adjust the WalkSpeed and SprintSpeed settings in the CONFIGURATION section to suit your game.",
+  "Set EnableTrails to true or false to enable or disable the sprint visual effects.",
+  "Press Play to test sprinting using Left Shift, the controller's left stick button (L3), or the mobile sprint button."
+],
   "notes": "Input uses Left Shift by default.",
   "videoUrl": ""
 }

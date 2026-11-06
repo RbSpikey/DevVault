@@ -21,18 +21,15 @@
       "name": "DoubleJump.client.lua",
       "description": "Input, jump state and landing reset.",
       "path": "scripts/DoubleJump.client.lua"
-    },
-    {
-      "name": "Config.lua",
-      "description": "Tune the second jump without editing logic.",
-      "path": "scripts/Config.lua"
     }
   ],
   "instructions": [
-    "Create a ModuleScript named Config inside ReplicatedStorage.",
-    "Place DoubleJump.client.lua in StarterPlayer > StarterPlayerScripts.",
-    "Adjust JumpPower in Config.lua and test with Play mode."
-  ],
+  "In Roblox Studio, open Explorer and navigate to StarterPlayer > StarterPlayerScripts.",
+  "Insert a LocalScript into StarterPlayerScripts and name it DoubleJump.",
+  "Copy the contents of the Double Jump script into your new LocalScript.",
+  "Press Play to test the system. Players can now jump a second time while in mid-air.",
+  "To customise the system, adjust the JumpPower setting at the top of the script."
+],
   "notes": "This example uses the default Humanoid jump system.",
-  "videoUrl": ""
+  "videoUrl": "https://www.youtube.com/shorts/HiYPRk38oSA"
 }
