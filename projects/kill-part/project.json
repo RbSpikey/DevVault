@@ -1,0 +1,34 @@
+{
+  "id": "kill-part",
+  "name": "Kill Part",
+  "description": "Turn any part into a deadly obstacle that instantly eliminates players on contact.",
+  "thumbnail": "/images/kill-part.svg",
+  "category": "Gameplay",
+  "version": "1.0.0",
+  "tags": [
+    "Gameplay",
+    "Part",
+    "Server"
+  ],
+  "details": "A simple kill brick system that detects when a player touches a part and instantly eliminates their character.",
+  "features": [
+    "Instant player elimination",
+    "Detects character contact",
+    "Easy to set up"
+  ],
+  "scripts": [
+    {
+      "name": "KillPart.server.lua",
+      "description": "Detects player contact and eliminates their character.",
+      "path": "scripts/KillPart.server.lua"
+    }
+  ],
+  "instructions": [
+    "In Roblox Studio, select the Part you want to turn into a kill brick.",
+    "Insert a normal Script inside the Part.",
+    "Copy the contents of the Kill Part script into your new Script.",
+    "Press Play to test the system. Players will now be eliminated when they touch the part."
+  ],
+  "notes": "This example instantly eliminates characters using their Humanoid.",
+  "videoUrl": " "
+}
