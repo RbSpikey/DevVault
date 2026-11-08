@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460">
+  <defs>
+    <linearGradient id="background" x2="1" y2="1">
+      <stop stop-color="#241711"/>
+      <stop offset="1" stop-color="#131316"/>
+    </linearGradient>
+    <linearGradient id="accent">
+      <stop stop-color="#ff8a36"/>
+      <stop offset="1" stop-color="#ff493f"/>
+    </linearGradient>
+    <linearGradient id="bar" x2="0" y2="1">
+      <stop stop-color="#ffad58"/>
+      <stop offset="1" stop-color="#ff6040"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="460" rx="24" fill="url(#background)"/>
+  <circle cx="610" cy="112" r="128" fill="#ff5c32" opacity=".09"/>
+  <path d="M0 366 160 288l126 48 137-122 102 62 150-99 125 64v219H0z" fill="#19191d"/>
+  <path d="M0 395 183 315l118 39 124-114 121 66 131-88 123 52v190H0z" fill="#202024"/>
+
+  <!-- Leaderboard illustration -->
+  <g transform="translate(410 112)">
+    <rect x="0" y="0" width="190" height="220" rx="16" fill="#17171b" stroke="#ff7545" stroke-opacity=".55" stroke-width="3"/>
+    <rect x="16" y="16" width="158" height="34" rx="8" fill="#ff693f" opacity=".16"/>
+    <path d="M29 27h15m-15 8h15" stroke="#ff9850" stroke-width="3" stroke-linecap="round"/>
+    <text x="54" y="38" fill="#ff9850" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1">PLAYER STATS</text>
+
+    <g font-family="Arial, sans-serif" font-size="15" font-weight="700">
+      <rect x="16" y="64" width="158" height="39" rx="7" fill="#25252a"/>
+      <circle cx="36" cy="83.5" r="11" fill="url(#accent)"/>
+      <text x="32.5" y="88" fill="#17171b" font-size="12">1</text>
+      <text x="56" y="89" fill="#f5f2ef">Coins</text>
+      <text x="158" y="89" fill="#ffad58" text-anchor="end">250</text>
+
+      <rect x="16" y="112" width="158" height="39" rx="7" fill="#25252a"/>
+      <circle cx="36" cy="131.5" r="11" fill="#55545c"/>
+      <text x="32.5" y="136" fill="#fff" font-size="12">2</text>
+      <text x="56" y="137" fill="#f5f2ef">Wins</text>
+      <text x="158" y="137" fill="#ffad58" text-anchor="end">12</text>
+
+      <rect x="16" y="160" width="158" height="39" rx="7" fill="#25252a"/>
+      <circle cx="36" cy="179.5" r="11" fill="#55545c"/>
+      <text x="32.5" y="184" fill="#fff" font-size="12">3</text>
+      <text x="56" y="185" fill="#f5f2ef">Level</text>
+      <text x="158" y="185" fill="#ffad58" text-anchor="end">5</text>
+    </g>
+  </g>
+
+  <!-- Small decorative stat icon -->
+  <g transform="translate(654 104)">
+    <path d="M0 20 18 0l18 20-18 20z" fill="url(#accent)" opacity=".95"/>
+    <path d="M18 10v12m0 6v1" stroke="#17171b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <text x="52" y="82" fill="#ff8750" font-family="Arial, sans-serif" font-size="15" letter-spacing="4">PLAYER SYSTEM</text>
+  <text x="52" y="135" fill="#fff" font-family="Arial, sans-serif" font-size="38" font-weight="700">LEADERSTATS</text>
+  <text x="54" y="171" fill="#9c9ba2" font-family="Arial, sans-serif" font-size="16">Track player progress.</text>
+  <rect x="52" y="202" width="112" height="30" rx="15" fill="#ff693f" opacity=".15"/>
+  <text x="68" y="222" fill="#ff8750" font-family="Arial, sans-serif" font-size="12">PLAYER DATA</text>
+</svg>

@@ -18,8 +18,8 @@ local Config = {
 		Outer = Color3.fromRGB(0, 100, 255), -- Outer trail starting color
 		OuterEnd = Color3.fromRGB(0, 220, 255), -- Outer trail ending color
 		Inner = Color3.fromRGB(180, 245, 255), -- Inner trail color
-		Particles = Color3.fromRGB(0, 190, 255) -- Particle color
-	}
+		Particles = Color3.fromRGB(0, 190, 255), -- Particle color
+	},
 }
 
 local CurrentHumanoid
@@ -58,12 +58,12 @@ local function CreateTrail(character)
 			NumberSequenceKeypoint.new(0, 0.1),
 			NumberSequenceKeypoint.new(0.2, width),
 			NumberSequenceKeypoint.new(0.7, width * 0.7),
-			NumberSequenceKeypoint.new(1, 0)
+			NumberSequenceKeypoint.new(1, 0),
 		})
 		trail.Transparency = NumberSequence.new({
 			NumberSequenceKeypoint.new(0, 0.05),
 			NumberSequenceKeypoint.new(0.7, 0.3),
-			NumberSequenceKeypoint.new(1, 1)
+			NumberSequenceKeypoint.new(1, 1),
 		})
 		trail.Enabled = false
 		trail.Parent = root
@@ -77,7 +77,7 @@ local function CreateTrail(character)
 		Config.TrailLifetime,
 		ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Config.TrailColors.Outer),
-			ColorSequenceKeypoint.new(1, Config.TrailColors.OuterEnd)
+			ColorSequenceKeypoint.new(1, Config.TrailColors.OuterEnd),
 		})
 	)
 
@@ -99,11 +99,11 @@ local function CreateTrail(character)
 	SprintParticles.EmissionDirection = Enum.NormalId.Bottom
 	SprintParticles.Size = NumberSequence.new({
 		NumberSequenceKeypoint.new(0, 0.35),
-		NumberSequenceKeypoint.new(1, 0)
+		NumberSequenceKeypoint.new(1, 0),
 	})
 	SprintParticles.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0, 0.1),
-		NumberSequenceKeypoint.new(1, 1)
+		NumberSequenceKeypoint.new(1, 1),
 	})
 	SprintParticles.Enabled = false
 	SprintParticles.Parent = root
@@ -113,8 +113,7 @@ local function CreateTrail(character)
 	end
 
 	TrailConnection = RunService.Heartbeat:Connect(function()
-		local moving = CurrentHumanoid
-			and CurrentHumanoid.MoveDirection.Magnitude > 0.05
+		local moving = CurrentHumanoid and CurrentHumanoid.MoveDirection.Magnitude > 0.05
 
 		local active = IsSprinting and moving
 
@@ -143,12 +142,8 @@ local function SetSprint(enabled)
 
 	SpeedTween = TweenService:Create(
 		CurrentHumanoid,
-		TweenInfo.new(
-			Config.TransitionTime,
-			Enum.EasingStyle.Quad,
-			Enum.EasingDirection.Out
-		),
-		{WalkSpeed = targetSpeed}
+		TweenInfo.new(Config.TransitionTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ WalkSpeed = targetSpeed }
 	)
 
 	SpeedTween:Play()
@@ -157,8 +152,7 @@ end
 local function HandleSprint(_, inputState)
 	if inputState == Enum.UserInputState.Begin then
 		SetSprint(true)
-	elseif inputState == Enum.UserInputState.End
-		or inputState == Enum.UserInputState.Cancel then
+	elseif inputState == Enum.UserInputState.End or inputState == Enum.UserInputState.Cancel then
 		SetSprint(false)
 	end
 

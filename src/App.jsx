@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom';
+import { Link, NavLink, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import {
   ArrowDownToLine,
@@ -11,6 +11,7 @@ import {
   Code2,
   Copy,
   ExternalLink,
+  BookOpen,
   Menu,
   Package,
   Search,
@@ -21,7 +22,7 @@ import hljs from 'highlight.js/lib/core';
 import lua from 'highlight.js/lib/languages/lua';
 import JSZip from 'jszip';
 
-import { getProject, projects, projectIssues } from './services/projects.js';
+import { getProject, projects } from './services/projects.js';
 
 hljs.registerLanguage('lua', lua);
 
@@ -68,19 +69,14 @@ function Navbar() {
           <a
             href={youtube}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             onClick={() => setOpen(false)}
           >
             YouTube <ExternalLink size={13} />
           </a>
         </div>
 
-        <a
-          className="nav-cta"
-          href={youtube}
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="nav-cta" href={youtube} target="_blank" rel="noopener noreferrer">
           Watch on YouTube <ArrowRight size={15} />
         </a>
       </nav>
@@ -100,14 +96,12 @@ function Footer() {
         <div className="footer-links">
           <Link to="/Projects">Project library</Link>
 
-          <a href={youtube} target="_blank" rel="noreferrer">
+          <a href={youtube} target="_blank" rel="noopener noreferrer">
             YouTube <ExternalLink size={13} />
           </a>
         </div>
 
-        <span className="copyright">
-          © {new Date().getFullYear()} RBSpikey
-        </span>
+        <span className="copyright">© {new Date().getFullYear()} RBSpikey</span>
       </div>
     </footer>
   );
@@ -133,33 +127,6 @@ function SectionLabel({ children }) {
 }
 
 function Home() {
-  const pillars = [
-    {
-      icon: <Code2 />,
-      num: '01',
-      title: 'Systems made to adapt',
-      text: 'Start with a useful Roblox Studio system and shape it around the way your game works.'
-    },
-    {
-      icon: <Package />,
-      num: '02',
-      title: 'Context with the code',
-      text: 'Understand where scripts go, what they do, and how the pieces fit together.'
-    },
-    {
-      icon: <Copy />,
-      num: '03',
-      title: 'Ready when you are',
-      text: 'Copy a snippet or download the source files, then take them straight into Studio.'
-    }
-  ];
-
-  const steps = [
-    ['01', 'Choose a resource', 'Find a system that fits what you are building.'],
-    ['02', 'Follow the setup', 'Use the notes and file descriptions to get started.'],
-    ['03', 'Build it your way', 'Adapt the code to fit your experience.']
-  ];
-
   return (
     <Shell>
       <section className="hero container">
@@ -173,8 +140,8 @@ function Home() {
           </h1>
 
           <p className="hero-desc">
-            Useful systems, ready-to-use scripts, and practical resources to
-            help you build better experiences in Roblox Studio.
+            Useful systems, ready-to-use scripts, and practical resources to help you
+            build better experiences in Roblox Studio.
           </p>
 
           <div className="hero-actions">
@@ -185,7 +152,7 @@ function Home() {
             <a
               href={youtube}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="button button-quiet"
             >
               <CirclePlay size={17} /> Visit YouTube
@@ -222,12 +189,10 @@ function Home() {
 
             <pre>
               <code>
-                <span className="code-pink">local</span> Players =
-                game:<span className="code-blue">GetService</span>(
-                <span className="code-green">"Players"</span>)
-                {'\n'}
-                <span className="code-pink">local</span> player =
-                Players.LocalPlayer
+                <span className="code-pink">local</span> Players = game:
+                <span className="code-blue">GetService</span>(
+                <span className="code-green">"Players"</span>){'\n'}
+                <span className="code-pink">local</span> player = Players.LocalPlayer
                 {'\n\n'}
                 <span className="code-muted">-- build something great</span>
                 {'\n'}
@@ -267,171 +232,27 @@ function Home() {
         </div>
       </section>
 
-      <section className="platform-section">
-        <div className="container">
-          <div className="platform-heading">
-            <div>
-              <SectionLabel>THE RB SPIKEY TOOLKIT</SectionLabel>
-              <h2>
-                A clearer path from <span>idea to in-game.</span>
-              </h2>
-            </div>
-
+      <section className="featured-section container">
+        <div className="featured-heading">
+          <div>
+            <SectionLabel>PROJECT LIBRARY</SectionLabel>
+            <h2>
+              Start with a <span>project.</span>
+            </h2>
             <p>
-              Less time starting from a blank script. More time making the
-              experience yours.
+              Free Roblox systems with the code and setup notes to make them your own.
             </p>
           </div>
-
-          <div className="platform-grid">
-            <div className="pillar-list">
-              {pillars.map((x) => (
-                <article className="pillar-row" key={x.num}>
-                  <span className="pillar-number">{x.num}</span>
-                  <span className="pillar-icon">{x.icon}</span>
-
-                  <div>
-                    <h3>{x.title}</h3>
-                    <p>{x.text}</p>
-                  </div>
-
-                  <ArrowRight size={17} className="pillar-arrow" />
-                </article>
-              ))}
-            </div>
-
-            <div className="resource-card">
-              <div className="resource-card-head">
-                <span>
-                  <i /> RESOURCE PAGE
-                </span>
-                <b>INSIDE THE TOOLKIT</b>
-              </div>
-
-              <div className="resource-card-title">
-                <span className="resource-glyph">
-                  <Code2 size={17} />
-                </span>
-
-                <div>
-                  <strong>Everything in one place.</strong>
-                  <small>Made to help you get moving.</small>
-                </div>
-              </div>
-
-              <div className="resource-checks">
-                <div>
-                  <span>
-                    <Check size={14} />
-                  </span>
-                  <div>
-                    <b>Clear setup notes</b>
-                    <small>Know where each file belongs.</small>
-                  </div>
-                </div>
-
-                <div>
-                  <span>
-                    <Check size={14} />
-                  </span>
-                  <div>
-                    <b>Readable source code</b>
-                    <small>Explore every line and adapt it.</small>
-                  </div>
-                </div>
-
-                <div>
-                  <span>
-                    <Check size={14} />
-                  </span>
-                  <div>
-                    <b>Quick copy & downloads</b>
-                    <small>Take the files into Roblox Studio.</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="resource-card-foot">
-                <span>
-                  <i /> BUILT FOR ROBLOX STUDIO
-                </span>
-                <span>
-                  RB<span className="brand-accent">SPIKEY</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="journey-section container">
-        <div className="journey-heading">
-          <SectionLabel>MADE TO BE PICKED UP</SectionLabel>
-
-          <h2>
-            Find it. Understand it. <span>Build on it.</span>
-          </h2>
-
-          <p>
-            Every resource is a starting point, with the code and guidance to
-            keep you in control.
-          </p>
+          <Link to="/Projects" className="featured-link">
+            View all projects <ArrowRight size={16} />
+          </Link>
         </div>
 
-        <div className="journey-steps">
-          {steps.map(([n, title, text], i) => (
-            <article className="journey-step" key={n}>
-              <div className="journey-step-marker">
-                <span>{n}</span>
-                {i < steps.length - 1 && <i />}
-              </div>
-
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </article>
+        <div className="project-grid">
+          {projects.slice(0, 3).map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
-      </section>
-
-      <section className="channel-section container">
-        <div className="channel-card">
-          <div className="channel-symbol">
-            <CirclePlay size={25} />
-          </div>
-
-          <div className="channel-copy">
-            <span>LEARN ALONG ON YOUTUBE</span>
-            <h2>See it come together.</h2>
-            <p>
-              Roblox Studio tutorials, project walkthroughs, and development
-              tips from RBSpikey.
-            </p>
-          </div>
-
-          <a
-            href={youtube}
-            target="_blank"
-            rel="noreferrer"
-            className="button button-primary"
-          >
-            Visit the channel <ArrowRight size={17} />
-          </a>
-
-          <div className="channel-orbit" />
-        </div>
-      </section>
-
-      <section className="cta-section container">
-        <div>
-          <SectionLabel>READY TO START?</SectionLabel>
-          <h2>
-            Make your next idea <span>playable.</span>
-          </h2>
-        </div>
-
-        <Link to="/Projects" className="button button-primary">
-          Explore the library <ArrowRight size={17} />
-        </Link>
       </section>
     </Shell>
   );
@@ -501,8 +322,8 @@ function ProjectsPage() {
           </h1>
 
           <p>
-            Useful building blocks for your next Roblox experience. Explore,
-            learn, and make them your own.
+            Useful building blocks for your next Roblox experience. Explore, learn, and
+            make them your own.
           </p>
         </div>
 
@@ -582,7 +403,7 @@ function ProjectsPage() {
   );
 }
 
-function ScriptCode({ script, index }) {
+function ScriptCode({ script }) {
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState('');
 
@@ -639,8 +460,7 @@ function ScriptCode({ script, index }) {
 
       {script.missing ? (
         <div className="code-missing">
-          This script file could not be found. Check the project's scripts
-          folder.
+          This script file could not be found. Check the project's scripts folder.
         </div>
       ) : (
         <div className="code-scroll">
@@ -649,20 +469,14 @@ function ScriptCode({ script, index }) {
               let html;
 
               try {
-                html = line
-                  ? hljs.highlight(line, { language: 'lua' }).value
-                  : '&nbsp;';
+                html = line ? hljs.highlight(line, { language: 'lua' }).value : '&nbsp;';
               } catch {
-                html = line
-                  .replaceAll('&', '&amp;')
-                  .replaceAll('<', '&lt;');
+                html = line.replaceAll('&', '&amp;').replaceAll('<', '&lt;');
               }
 
               return (
                 <div className="code-line" key={i}>
-                  <span className="line-no">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                  <span className="line-no">{String(i + 1).padStart(2, '0')}</span>
 
                   <code dangerouslySetInnerHTML={{ __html: html }} />
                 </div>
@@ -684,7 +498,7 @@ function ScriptCode({ script, index }) {
 
 function CodeViewer({ project }) {
   if (project.scripts.length === 1) {
-    return <ScriptCode script={project.scripts[0]} index={0} />;
+    return <ScriptCode script={project.scripts[0]} />;
   }
 
   return (
@@ -708,7 +522,7 @@ function CodeViewer({ project }) {
             <ChevronDown size={16} className="accordion-chevron" />
           </summary>
 
-          <ScriptCode script={script} index={index} />
+          <ScriptCode script={script} />
         </details>
       ))}
     </div>
@@ -772,19 +586,27 @@ function ProjectDetail() {
             <h1>{project.name}</h1>
             <p>{project.description}</p>
 
-            {project.videoUrl &&
-              /^https?:\/\//i.test(project.videoUrl) && (
-                <a
-                  className="project-video-link"
-                  href={project.videoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <CirclePlay size={16} />
-                  Watch project video
-                  <ExternalLink size={13} />
-                </a>
-              )}
+            {project.explanation?.enabled && project.explanation.sections?.length > 0 && (
+              <Link
+                className="button button-primary explain-link"
+                to={`/Projects/${project.id}/explain`}
+              >
+                <BookOpen size={16} /> Explain this script <ArrowRight size={15} />
+              </Link>
+            )}
+
+            {project.videoUrl && /^https?:\/\//i.test(project.videoUrl) && (
+              <a
+                className="project-video-link"
+                href={project.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <CirclePlay size={16} />
+                Watch project video
+                <ExternalLink size={13} />
+              </a>
+            )}
 
             <div className="tag-row">
               {project.tags.map((t) => (
@@ -808,10 +630,7 @@ function ProjectDetail() {
 
           <img
             className="detail-thumb"
-            src={
-              project.thumbnail ||
-              `${import.meta.env.BASE_URL}images/fallback.svg`
-            }
+            src={project.thumbnail || `${import.meta.env.BASE_URL}images/fallback.svg`}
             onError={(e) => {
               e.currentTarget.src = `${import.meta.env.BASE_URL}images/fallback.svg`;
             }}
@@ -829,9 +648,7 @@ function ProjectDetail() {
                 </div>
               </div>
 
-              <p className="prose">
-                {project.details || project.description}
-              </p>
+              <p className="prose">{project.details || project.description}</p>
 
               {project.features?.length > 0 && (
                 <div className="feature-list">
@@ -865,8 +682,8 @@ function ProjectDetail() {
 
               {project.scripts.length > 1 && (
                 <div className="script-list-hint">
-                  <span>{project.scripts.length} FILES</span> — open a file to
-                  view its code
+                  <span>{project.scripts.length} FILES</span> — open a file to view its
+                  code
                 </div>
               )}
 
@@ -895,9 +712,7 @@ function ProjectDetail() {
                   ))}
                 </ol>
               ) : (
-                <p className="side-muted">
-                  No installation guide has been added yet.
-                </p>
+                <p className="side-muted">No installation guide has been added yet.</p>
               )}
 
               {project.notes && (
@@ -933,6 +748,150 @@ function ProjectDetail() {
   );
 }
 
+function ExplainPage() {
+  const { id } = useParams();
+  const project = getProject(id);
+  const explanation = project?.explanation;
+  const sections = explanation?.sections || [];
+  const [sectionIndex, setSectionIndex] = useState(0);
+
+  useEffect(() => {
+    setSectionIndex(0);
+  }, [id]);
+
+  if (!project || !explanation?.enabled || !sections.length) {
+    return (
+      <Shell>
+        <div className="not-found container">
+          <div className="not-found-code">404</div>
+          <h1>Explanation not found.</h1>
+          <p>This project does not have an explanation available yet.</p>
+          <Link
+            className="button button-primary"
+            to={project ? `/Projects/${project.id}` : '/Projects'}
+          >
+            <ArrowLeft size={16} /> {project ? 'Back to project' : 'Back to projects'}
+          </Link>
+        </div>
+      </Shell>
+    );
+  }
+
+  const section = sections[sectionIndex];
+  const progress = ((sectionIndex + 1) / sections.length) * 100;
+  const highlightedLines = section.code.split('\n');
+
+  return (
+    <Shell>
+      <div className="explain-page container">
+        <Link to={`/Projects/${project.id}`} className="back-link">
+          <ArrowLeft size={15} /> Back to {project.name}
+        </Link>
+
+        <header className="explain-header">
+          <SectionLabel>GUIDED CODE WALKTHROUGH</SectionLabel>
+          <h1>
+            {project.name}: <span>{explanation.title || 'How it works'}</span>
+          </h1>
+          <p>{explanation.intro || project.description}</p>
+        </header>
+
+        <section className="explain-card" aria-live="polite">
+          <div className="explain-progress-row">
+            <span>
+              SECTION {String(sectionIndex + 1).padStart(2, '0')} <i>OF</i>{' '}
+              {String(sections.length).padStart(2, '0')}
+            </span>
+            <span>{Math.round(progress)}% COMPLETE</span>
+          </div>
+          <div
+            className="explain-progress-track"
+            role="progressbar"
+            aria-label="Explanation progress"
+            aria-valuemin={1}
+            aria-valuemax={sections.length}
+            aria-valuenow={sectionIndex + 1}
+          >
+            <span style={{ width: `${progress}%` }} />
+          </div>
+
+          <div className="explain-section-heading">
+            <span>{String(sectionIndex + 1).padStart(2, '0')}</span>
+            <h2>{section.title}</h2>
+          </div>
+
+          <div className="explain-code" aria-label="Lua code example">
+            <div className="explain-code-top">
+              <Code2 size={15} /> SOURCE FROM{' '}
+              {project.scripts.find((script) => script.content?.includes(section.code))
+                ?.name || 'PROJECT SCRIPT'}{' '}
+              <span>LUAU</span>
+            </div>
+            <div className="code-scroll">
+              <div className="code-lines">
+                {highlightedLines.map((line, lineIndex) => {
+                  let html;
+                  try {
+                    html = line
+                      ? hljs.highlight(line, { language: 'lua' }).value
+                      : '&nbsp;';
+                  } catch {
+                    html = line.replaceAll('&', '&amp;').replaceAll('<', '&lt;');
+                  }
+                  return (
+                    <div className="code-line" key={lineIndex}>
+                      <span className="line-no">
+                        {String(lineIndex + 1).padStart(2, '0')}
+                      </span>
+                      <code dangerouslySetInnerHTML={{ __html: html }} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="explain-description">
+            <h3>What this part does</h3>
+            <p>{section.description}</p>
+            {section.note && (
+              <aside className="note-box">
+                <span>TIP</span>
+                <p>{section.note}</p>
+              </aside>
+            )}
+          </div>
+
+          <div className="explain-navigation">
+            <button
+              className="button button-outline"
+              onClick={() => setSectionIndex((current) => current - 1)}
+              disabled={sectionIndex === 0}
+            >
+              <ArrowLeft size={15} /> Previous
+            </button>
+            <span>
+              {sectionIndex + 1} / {sections.length}
+            </span>
+            {sectionIndex === sections.length - 1 ? (
+              <Link className="button button-primary" to={`/Projects/${project.id}`}>
+                Return to project <ArrowRight size={15} />
+              </Link>
+            ) : (
+              <button
+                className="button button-primary"
+                onClick={() => setSectionIndex((current) => current + 1)}
+              >
+                Next section <ArrowRight size={15} />
+              </button>
+            )}
+          </div>
+        </section>
+      </div>
+    </Shell>
+  );
+}
+
 function NotFound() {
   return (
     <Shell>
@@ -948,13 +907,27 @@ function NotFound() {
   );
 }
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/Projects" element={<ProjectsPage />} />
-      <Route path="/Projects/:id" element={<ProjectDetail />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Projects" element={<ProjectsPage />} />
+        <Route path="/Projects/:id/explain" element={<ExplainPage />} />
+        <Route path="/Projects/:id" element={<ProjectDetail />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }

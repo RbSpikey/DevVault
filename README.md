@@ -1,19 +1,19 @@
 # RBSpikey Developer Hub
 
-A file-based Roblox development resource library built with React, Vite, React Router, Highlight.js, and JSZip.
+A static, file-based resource library for Roblox developers. It is built with React, Vite, React Router, Highlight.js, and JSZip. Projects include source code, setup instructions, and guided explanations for learning how each script works.
 
 ## Run locally
 
-Install Node.js 20 or newer, then run:
+Use Node.js 22.12 or newer, then run:
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
 
 Open the local URL printed by Vite (normally `http://localhost:5173/`). Do not open `index.html` directly or serve this source folder with a plain static file server: the browser cannot execute the React `.jsx` source files. For production, use `npm run build` and serve the generated `dist/` directory; configure the host to route unknown paths back to `index.html` so `/Projects/<slug>` works on refresh.
 
-Create a production build with `npm run build`, then serve the generated `dist/` folder with any static host. Vite discovers project JSON and Lua files at build time; rebuild after adding or changing a project.
+Create a production build with `npm run build`, then serve the generated `dist/` folder with any static host. Vite discovers project JSON and Lua files at build time; rebuild after adding or changing a project. Run `npm run format` before committing code and `npm run format:check` to check JavaScript, CSS, JSON, Markdown, and YAML formatting plus Lua formatting.
 
 ## Add a new project — full walkthrough
 
@@ -65,10 +65,7 @@ Start with this full example and replace the sample values with your project's i
   "category": "Movement",
   "version": "1.0.0",
   "tags": ["Movement", "Player"],
-  "features": [
-    "First useful feature",
-    "Another useful feature"
-  ],
+  "features": ["First useful feature", "Another useful feature"],
   "scripts": [
     {
       "name": "MySystem.client.lua",
@@ -86,27 +83,41 @@ Start with this full example and replace the sample values with your project's i
     "Place MySystem.client.lua in StarterPlayer > StarterPlayerScripts.",
     "Adjust the settings in Config.lua, then test in Roblox Studio."
   ],
-  "notes": "Optional warning or extra setup note."
+  "notes": "Optional warning or extra setup note.",
+  "explanation": {
+    "enabled": true,
+    "title": "Understanding My System",
+    "intro": "A short introduction to the guided walkthrough.",
+    "sections": [
+      {
+        "title": "First section",
+        "description": "Explain what this part of the script does.",
+        "code": "local Players = game:GetService(\"Players\")",
+        "note": "Optional tip for this section."
+      }
+    ]
+  }
 }
 ```
 
 #### Configuration fields
 
-| Field | Required? | What it controls |
-|---|---|---|
-| `id` | Yes | Project slug and URL. Must match the folder name exactly. |
-| `name` | Yes | Project title shown across the site. |
-| `description` | Recommended | Short summary used on the project card and detail page. |
-| `details` | Optional | Longer project overview. Falls back to `description`. |
-| `thumbnail` | Recommended | Image URL under `public/images/`. Missing/broken images use fallback artwork. |
-| `videoUrl` | Optional | Full YouTube URL. Adds a **Watch project video** link to the project page. |
-| `category` | Recommended | Library filter label, such as `Movement`, `Gameplay`, or `UI & UX`. |
-| `version` | Optional | Version label displayed on cards and project pages. |
-| `tags` | Optional | Short searchable labels displayed on the card and page. |
-| `features` | Optional | List of feature highlights on the project page. |
-| `scripts` | Yes | Script filenames, descriptions, and their safe relative paths. |
-| `instructions` | Optional | Ordered setup steps shown in the installation section. |
-| `notes` | Optional | Additional note shown below installation steps. |
+| Field          | Required?   | What it controls                                                                                                                                                                                                    |
+| -------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`           | Yes         | Project slug and URL. Must match the folder name exactly.                                                                                                                                                           |
+| `name`         | Yes         | Project title shown across the site.                                                                                                                                                                                |
+| `description`  | Recommended | Short summary used on the project card and detail page.                                                                                                                                                             |
+| `details`      | Optional    | Longer project overview. Falls back to `description`.                                                                                                                                                               |
+| `thumbnail`    | Recommended | Image URL under `public/images/`. Missing/broken images use fallback artwork.                                                                                                                                       |
+| `videoUrl`     | Optional    | Full YouTube URL. Adds a **Watch project video** link to the project page.                                                                                                                                          |
+| `category`     | Recommended | Library filter label, such as `Movement`, `Gameplay`, or `UI & UX`.                                                                                                                                                 |
+| `version`      | Optional    | Version label displayed on cards and project pages.                                                                                                                                                                 |
+| `tags`         | Optional    | Short searchable labels displayed on the card and page.                                                                                                                                                             |
+| `features`     | Optional    | List of feature highlights on the project page.                                                                                                                                                                     |
+| `scripts`      | Yes         | Script filenames, descriptions, and their safe relative paths.                                                                                                                                                      |
+| `instructions` | Optional    | Ordered setup steps shown in the installation section.                                                                                                                                                              |
+| `notes`        | Optional    | Additional note shown below installation steps.                                                                                                                                                                     |
+| `explanation`  | Optional    | Enables a guided, section-by-section code walkthrough. Each code snippet should be copied verbatim from one of the project's listed scripts. Set `enabled` to `false` or omit the field to hide the Explain button. |
 
 To add a second, third, or later script, create the `.lua` file in `scripts/` and add another object to the `scripts` array. Keep each `path` in the form `scripts/Filename.lua`; the path must point to a real file and may not escape the project folder.
 
@@ -136,6 +147,7 @@ Vite reports build errors such as invalid JSON or unresolved imports. Confirm th
 - **Script section is missing or shows an error:** Check spelling and capitalization in the `scripts` entry and verify that the file exists directly inside `scripts/`.
 - **Thumbnail is missing:** Check the image file is under `public/images/` and the JSON path starts with `/images/`.
 - **Tutorial button is missing:** Set `videoUrl` to a full URL such as `https://www.youtube.com/watch?v=...`.
+- **Explain button is missing:** Add an `explanation` object with `enabled: true` and at least one section.
 - **New or changed project does not show:** Refresh the dev page; for production, run a new build and redeploy `dist/`.
 
 ## Routes and features
@@ -143,14 +155,15 @@ Vite reports build errors such as invalid JSON or unresolved imports. Confirm th
 - `/` overview landing page
 - `/Projects` searchable and filterable library
 - `/Projects/:id` generated project detail page
+- `/Projects/:id/explain` guided explanation page, enabled per project in its JSON file
 - Copy code uses the browser clipboard API.
 - Download actions save the original `.lua` file; multi-script projects can download a ZIP preserving their `scripts/` paths.
 
-The site is a static frontend. There is no database or runtime project API; project data and script sources are bundled during the Vite build.
+The site is a static frontend. There is no database or runtime project API; project data and script sources are bundled during the Vite build. All project code and metadata are public in the built site. Do not place credentials, private keys, or other secrets in project files or frontend environment variables. The Cloudflare Web Analytics identifier in `index.html` is a public site identifier, not a secret. The page also loads its fonts from Google Fonts and analytics from Cloudflare.
 
 ## Publish free with GitHub Pages
 
-This repository includes `.github/workflows/deploy.yml`. After it is pushed to a public GitHub repository's `main` branch and Pages is set to **GitHub Actions**, GitHub automatically builds and publishes the site. The workflow builds `dist/`, sets the Vite base path from the repository name, and adds a route fallback for project detail URLs.
+This repository includes `.github/workflows/deploy.yml`. After it is pushed to a GitHub repository's `main` branch and Pages is set to **GitHub Actions**, GitHub automatically builds and publishes the site. The workflow derives the Vite base path from the repository name, checks formatting and known dependency vulnerabilities, builds `dist/`, and adds a route fallback for project and explanation URLs. Third-party actions are pinned to full commit hashes, and Dependabot checks weekly for updates.
 
 1. Create a **public** repository on GitHub. Do not initialize it with a README, license, or `.gitignore` because this project already contains its files.
 2. Open PowerShell in this project folder and connect it to your new repository. Replace `YOUR-USERNAME` and `YOUR-REPOSITORY` with your GitHub username and repository name:

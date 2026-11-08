@@ -1,0 +1,66 @@
+{
+  "id": "leaderstats",
+  "name": "Leaderstats System",
+  "description": "Display player stats on the Roblox leaderboard with a simple, configurable leaderstats system.",
+  "thumbnail": "/images/leaderstats.svg",
+  "category": "Player",
+  "version": "1.0.0",
+  "tags": ["Player", "Leaderboard", "Server"],
+  "details": "A lightweight player statistics system that automatically creates a leaderboard when players join. Configure starting values for Coins, Wins, Level and other stats from one table.",
+  "features": [
+    "Automatic leaderboard creation",
+    "Configurable starting values",
+    "Supports multiple player stats"
+  ],
+  "scripts": [
+    {
+      "name": "Leaderstats.server.lua",
+      "description": "Creates and manages player leaderboard stats.",
+      "path": "scripts/Leaderstats.server.lua"
+    }
+  ],
+  "instructions": [
+    "In Roblox Studio, open Explorer and navigate to ServerScriptService.",
+    "Insert a new Script into ServerScriptService and name it Leaderstats.",
+    "Copy the contents of the Leaderstats script into your new Script.",
+    "Press Play to test the system. Coins, Wins and Level will appear on the player leaderboard.",
+    "To customise the starting stats, edit the DEFAULT_STATS table at the top of the script."
+  ],
+  "notes": "This example uses IntValues and does not save player stats between sessions. DataStore functionality can be added separately.",
+  "videoUrl": "",
+  "explanation": {
+    "enabled": true,
+    "title": "Understanding Leaderstats",
+    "intro": "Follow the script from getting the player service to building a leaderboard for each new player.",
+    "sections": [
+      {
+        "title": "Getting the Players service",
+        "description": "game:GetService(\"Players\") retrieves Roblox's Players service. The service gives this script access to player events, including the event that fires when someone joins. Keeping the service in a local variable lets the script use it later.",
+        "code": "local Players = game:GetService(\"Players\")",
+        "note": "This is a server script, so it can handle all players in the experience."
+      },
+      {
+        "title": "Setting default stats",
+        "description": "DEFAULT_STATS is a Lua table that pairs each stat name with its starting number. Coins starts at 100, Wins at 0, and Level at 1. Change these numbers or add another name and number to customise what every new player receives.",
+        "code": "local DEFAULT_STATS = {\n    Coins = 100,\n    Wins = 0,\n    Level = 1\n}"
+      },
+      {
+        "title": "Creating the leaderstats folder",
+        "description": "The function creates a Folder instance to group the player's stats. Roblox's built-in player list recognises a folder named exactly \"leaderstats\" and displays its value objects as leaderboard columns. Setting Parent to player puts the folder under that player's instance.",
+        "code": "local function createLeaderstats(player)\n    local leaderstats = Instance.new(\"Folder\")\n    leaderstats.Name = \"leaderstats\"\n    leaderstats.Parent = player"
+      },
+      {
+        "title": "Creating individual stats",
+        "description": "pairs(DEFAULT_STATS) visits each name and starting value in the table. For every pair, Instance.new(\"IntValue\") creates a whole-number value. The script gives it the stat's name, sets its starting number, and parents it to the leaderstats folder so Roblox can show it.",
+        "code": "    for statName, startingValue in pairs(DEFAULT_STATS) do\n        local stat = Instance.new(\"IntValue\")\n        stat.Name = statName\n        stat.Value = startingValue\n        stat.Parent = leaderstats\n    end\nend",
+        "note": "IntValue stores whole numbers. Use a different value object if a stat needs decimals or text."
+      },
+      {
+        "title": "Handling new players",
+        "description": "Players.PlayerAdded fires when a player joins the server. Connect(createLeaderstats) subscribes the function to that event. Roblox passes the joining player into the function, which creates their folder and stats while they are joining.",
+        "code": "Players.PlayerAdded:Connect(createLeaderstats)",
+        "note": "These values exist for the current server session. Saving them between sessions requires a separate data store system."
+      }
+    ]
+  }
+}

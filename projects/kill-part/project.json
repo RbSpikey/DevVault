@@ -5,11 +5,7 @@
   "thumbnail": "/images/kill-part.svg",
   "category": "Gameplay",
   "version": "1.0.0",
-  "tags": [
-    "Gameplay",
-    "Part",
-    "Server"
-  ],
+  "tags": ["Gameplay", "Part", "Server"],
   "details": "A simple kill brick system that detects when a player touches a part and instantly eliminates their character.",
   "features": [
     "Instant player elimination",
@@ -30,5 +26,36 @@
     "Press Play to test the system. Players will now be eliminated when they touch the part."
   ],
   "notes": "This example instantly eliminates characters using their Humanoid.",
-  "videoUrl": "https://www.youtube.com/shorts/Hrq83E51opg"
+  "videoUrl": "https://www.youtube.com/shorts/Hrq83E51opg",
+  "explanation": {
+    "enabled": true,
+    "title": "Understanding the Kill Part",
+    "intro": "Walk through how a part detects contact, finds the character's Humanoid, and reduces its health to zero.",
+    "sections": [
+      {
+        "title": "Getting the part this script controls",
+        "description": "script.Parent refers to the object the Script is inside. Put this server Script directly inside the Part you want to use as the kill obstacle.",
+        "code": "local part = script.Parent",
+        "note": "Because the Script is inside the part, the same code can work with any part you place it in."
+      },
+      {
+        "title": "Listening for contact",
+        "description": "Touched fires when another physical object touches the part. Connect attaches a callback function so the script can inspect the object that made contact.",
+        "code": "part.Touched:Connect(function(hit)\n\tlocal character = hit.Parent",
+        "note": "A character is made from several body parts, so the touching object is often a limb rather than the character model itself."
+      },
+      {
+        "title": "Finding a character's Humanoid",
+        "description": "hit.Parent is treated as the character model. FindFirstChildOfClass looks for an object whose class is Humanoid, which controls a character's health and movement.",
+        "code": "\tlocal character = hit.Parent\n\tlocal humanoid = character:FindFirstChildOfClass(\"Humanoid\")",
+        "note": "Objects without a Humanoid will not be eliminated by the next check."
+      },
+      {
+        "title": "Eliminating the character",
+        "description": "The if statement checks that a Humanoid was found before changing it. Setting Health to zero eliminates that character. The final end statements close the condition and the touch callback.",
+        "code": "\tif humanoid then\n\t\thumanoid.Health = 0\n\tend\nend)",
+        "note": "This example responds to any touching object that belongs to a model with a Humanoid."
+      }
+    ]
+  }
 }

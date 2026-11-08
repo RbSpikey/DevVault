@@ -53,15 +53,13 @@ for (const [configPath, config] of Object.entries(configs)) {
 
     const project = {
       ...config,
-      description:
-        config.description || 'A Roblox development resource from RBSpikey.',
+      description: config.description || 'A Roblox development resource from RBSpikey.',
       thumbnail: config.thumbnail
         ? `${import.meta.env.BASE_URL}${config.thumbnail.replace(/^\/+/, '')}`
         : undefined,
       category: config.category || 'Resources',
       tags: Array.isArray(config.tags) ? config.tags : [],
-      scripts,
-      missingThumbnail: !config.thumbnail
+      scripts
     };
 
     if (scripts.some((s) => s.missing)) {
@@ -78,9 +76,8 @@ export const projects = [...registry.values()].sort((a, b) =>
   a.name.localeCompare(b.name)
 );
 
-export const projectIssues = issues;
-
 export const getProject = (id) => registry.get(id);
 
-console.log('[ProjectRegistry] Loaded:', projects.map(p => p.id));
-console.log('[ProjectRegistry] Issues:', projectIssues);
+if (issues.length) {
+  console.warn('[ProjectRegistry] Configuration issues:', issues);
+}

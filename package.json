@@ -3,7 +3,28 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
-  "dependencies": { "@vitejs/plugin-react": "latest", "vite": "latest", "react": "latest", "react-dom": "latest", "react-router-dom": "latest", "lucide-react": "latest", "highlight.js": "latest", "jszip": "latest" },
-  "devDependencies": {}
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write . --ignore-unknown && stylua projects",
+    "format:check": "prettier --check . --ignore-unknown && stylua --check projects"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "6.2.1",
+    "highlight.js": "11.12.0",
+    "jszip": "3.10.2",
+    "lucide-react": "1.70.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.5",
+    "vite": "8.3.6"
+  },
+  "devDependencies": {
+    "@johnnymorganz/stylua-bin": "2.6.0",
+    "prettier": "3.9.10"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
 }

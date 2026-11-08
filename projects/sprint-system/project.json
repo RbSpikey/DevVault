@@ -5,11 +5,7 @@
   "thumbnail": "/images/sprint-system.svg",
   "category": "Movement",
   "version": "1.2.0",
-  "tags": [
-    "Movement",
-    "Input",
-    "Client"
-  ],
+  "tags": ["Movement", "Input", "Client"],
   "details": "A client-side sprint controller that responds to keyboard input, eases between movement speeds, and restores the default speed when the key is released.",
   "features": [
     "Hold Shift to sprint",
@@ -24,13 +20,50 @@
     }
   ],
   "instructions": [
-  "In Roblox Studio, navigate to StarterPlayer > StarterPlayerScripts.",
-  "Insert a LocalScript and name it Sprint.",
-  "Copy the provided sprint system code into the LocalScript.",
-  "Adjust the WalkSpeed and SprintSpeed settings in the CONFIGURATION section to suit your game.",
-  "Set EnableTrails to true or false to enable or disable the sprint visual effects.",
-  "Press Play to test sprinting using Left Shift, the controller's left stick button (L3), or the mobile sprint button."
-],
+    "In Roblox Studio, navigate to StarterPlayer > StarterPlayerScripts.",
+    "Insert a LocalScript and name it Sprint.",
+    "Copy the provided sprint system code into the LocalScript.",
+    "Adjust the WalkSpeed and SprintSpeed settings in the CONFIGURATION section to suit your game.",
+    "Set EnableTrails to true or false to enable or disable the sprint visual effects.",
+    "Press Play to test sprinting using Left Shift, the controller's left stick button (L3), or the mobile sprint button."
+  ],
   "notes": "Input uses Left Shift by default.",
-  "videoUrl": "https://www.youtube.com/shorts/RouN62S2OLQ"
+  "videoUrl": "https://www.youtube.com/shorts/RouN62S2OLQ",
+  "explanation": {
+    "enabled": true,
+    "title": "Understanding Sprint",
+    "intro": "Learn how the LocalScript configures sprinting, changes walking speed smoothly, and binds sprint controls for different devices.",
+    "sections": [
+      {
+        "title": "Getting the player controls",
+        "description": "Players identifies the local player whose character will sprint. ContextActionService binds a named action to keyboard, controller, and Roblox's touch button. TweenService smooths speed changes, while RunService updates the visual effects as the player moves.",
+        "code": "local Players = game:GetService(\"Players\")\nlocal ContextActionService = game:GetService(\"ContextActionService\")\nlocal TweenService = game:GetService(\"TweenService\")\nlocal RunService = game:GetService(\"RunService\")\n\nlocal Player = Players.LocalPlayer",
+        "note": "The LocalPlayer property is available to LocalScripts running for a player."
+      },
+      {
+        "title": "Choosing speeds and effects",
+        "description": "Config groups the settings the developer can customise. WalkSpeed is the normal speed, SprintSpeed is used while sprinting, and TransitionTime sets how long the change takes. The remaining values control trails and particles.",
+        "code": "-- CONFIGURATION\nlocal Config = {\n\tWalkSpeed = 16, -- Normal movement speed\n\tSprintSpeed = 50, -- Movement speed while sprinting\n\tTransitionTime = 0.2, -- Time taken to transition between speeds",
+        "note": "Adjust these values to fit the pace of your game."
+      },
+      {
+        "title": "Changing speed smoothly",
+        "description": "SetSprint first checks that a living Humanoid is ready. It cancels an earlier speed tween if needed, chooses the target speed based on enabled, then creates and plays a new tween to change WalkSpeed over the configured time.",
+        "code": "local function SetSprint(enabled)\n\tif not CurrentHumanoid or CurrentHumanoid.Health <= 0 then\n\t\treturn\n\tend\n\n\tIsSprinting = enabled\n\n\tif SpeedTween then\n\t\tSpeedTween:Cancel()\n\tend\n\n\tlocal targetSpeed = enabled and Config.SprintSpeed or Config.WalkSpeed",
+        "note": "Using the same function for start and stop keeps the speed logic in one place."
+      },
+      {
+        "title": "Responding to button presses",
+        "description": "HandleSprint receives the input state for the sprint action. Begin starts sprinting; End or Cancel stops it. Returning Sink tells Roblox this action handled the input.",
+        "code": "local function HandleSprint(_, inputState)\n\tif inputState == Enum.UserInputState.Begin then\n\t\tSetSprint(true)\n\telseif inputState == Enum.UserInputState.End\n\t\tor inputState == Enum.UserInputState.Cancel then\n\t\tSetSprint(false)\n\tend\n\n\treturn Enum.ContextActionResult.Sink\nend",
+        "note": "Cancel also handles cases where the input ends unexpectedly."
+      },
+      {
+        "title": "Setting up each character and controls",
+        "description": "SetupCharacter waits for the new Humanoid, restores normal speed, clears the previous sprint state, and creates its effects. CharacterAdded runs that setup after respawn. BindAction registers keyboard and controller inputs and enables a touch button with a title and screen position.",
+        "code": "Player.CharacterAdded:Connect(SetupCharacter)\n\nif Player.Character then\n\tSetupCharacter(Player.Character)\nend\n\nContextActionService:BindAction(\n\t\"Sprint\",\n\tHandleSprint,\n\ttrue,\n\tEnum.KeyCode.LeftShift,\n\tEnum.KeyCode.ButtonL3\n)",
+        "note": "The third BindAction argument enables Roblox's on-screen button for touch devices."
+      }
+    ]
+  }
 }

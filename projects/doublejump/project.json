@@ -5,11 +5,7 @@
   "thumbnail": "/images/doublejump.svg",
   "category": "Movement",
   "version": "1.0.0",
-  "tags": [
-    "Movement",
-    "Player",
-    "Client"
-  ],
+  "tags": ["Movement", "Player", "Client"],
   "details": "A lightweight movement upgrade that tracks airborne jumps, resets cleanly on landing, and lets you tune the feel from one configuration module.",
   "features": [
     "Responsive mid-air input",
@@ -24,12 +20,49 @@
     }
   ],
   "instructions": [
-  "In Roblox Studio, open Explorer and navigate to StarterPlayer > StarterPlayerScripts.",
-  "Insert a LocalScript into StarterPlayerScripts and name it DoubleJump.",
-  "Copy the contents of the Double Jump script into your new LocalScript.",
-  "Press Play to test the system. Players can now jump a second time while in mid-air.",
-  "To customise the system, adjust the JumpPower setting at the top of the script."
-],
+    "In Roblox Studio, open Explorer and navigate to StarterPlayer > StarterPlayerScripts.",
+    "Insert a LocalScript into StarterPlayerScripts and name it DoubleJump.",
+    "Copy the contents of the Double Jump script into your new LocalScript.",
+    "Press Play to test the system. Players can now jump a second time while in mid-air.",
+    "To customise the system, adjust the JumpPower setting at the top of the script."
+  ],
   "notes": "This example uses the default Humanoid jump system.",
-  "videoUrl": "https://www.youtube.com/shorts/HiYPRk38oSA"
+  "videoUrl": "https://www.youtube.com/shorts/HiYPRk38oSA",
+  "explanation": {
+    "enabled": true,
+    "title": "Understanding Double Jump",
+    "intro": "See how the client listens for jump input, checks the character's state, and gives the player one extra jump in the air.",
+    "sections": [
+      {
+        "title": "Getting input and movement services",
+        "description": "The script gets the local player and three Roblox services. UserInputService reports jump requests, RunService lets the script apply a second velocity update on the next frame, and TweenService animates the glow effect.",
+        "code": "local Players = game:GetService(\"Players\")\nlocal UserInputService = game:GetService(\"UserInputService\")\nlocal TweenService = game:GetService(\"TweenService\")\nlocal RunService = game:GetService(\"RunService\")",
+        "note": "This is a LocalScript because jump input belongs to the individual player."
+      },
+      {
+        "title": "Tuning the jump settings",
+        "description": "Config keeps the system's adjustable values together. AirJumps sets the number of extra jumps, JumpPower controls their upward velocity, and Cooldown prevents rapid repeated inputs. The glow options control the visual effect.",
+        "code": "local Config = {\n\t-- Extra jumps allowed while airborne (1 = double jump, 2 = triple jump, etc.)\n\tAirJumps = 1,\n\n\t-- Upward velocity applied on each air jump (default Roblox ground jump is about 50)\n\tJumpPower = 50,\n\n\t-- Minimum seconds between air jumps\n\tCooldown = 0.15,",
+        "note": "Increase AirJumps to allow more than one extra jump."
+      },
+      {
+        "title": "Tracking the character's jump state",
+        "description": "setup runs for a character and avoids attaching the system twice by checking a character attribute. It waits for the Humanoid and root part, then starts a fresh jump counter and cooldown timer for that character.",
+        "code": "local function setup(character)\n\tif character:GetAttribute(\"DoubleJumpSetup\") then\n\t\treturn\n\tend\n\tcharacter:SetAttribute(\"DoubleJumpSetup\", true)\n\n\tlocal humanoid = character:WaitForChild(\"Humanoid\")\n\tlocal root = character:WaitForChild(\"HumanoidRootPart\")\n\n\tlocal jumpsUsed = 0\n\tlocal lastJump = 0\n\tlocal glowTween",
+        "note": "WaitForChild handles the brief moment before Roblox finishes creating character parts."
+      },
+      {
+        "title": "Checking each jump request",
+        "description": "Every JumpRequest first checks that the character is alive and either jumping or falling. The script then stops input when the extra jump limit is reached or the cooldown has not elapsed. Only a valid request increments the counter and launches the character.",
+        "code": "\tlocal jumpConnection = UserInputService.JumpRequest:Connect(function()\n\t\tif humanoid.Health <= 0 then\n\t\t\treturn\n\t\tend\n\n\t\tlocal state = humanoid:GetState()\n\n\t\tif state ~= Enum.HumanoidStateType.Freefall and state ~= Enum.HumanoidStateType.Jumping then\n\t\t\treturn\n\t\tend\n\n\t\tif jumpsUsed >= Config.AirJumps then\n\t\t\treturn\n\t\tend",
+        "note": "The early returns keep ground jumps and extra inputs from using an air jump."
+      },
+      {
+        "title": "Resetting for each character",
+        "description": "If the player already has a character, setup starts immediately. CharacterAdded connects setup so it runs again after each respawn. StateChanged also resets jumpsUsed when the Humanoid lands or enters another configured grounded state.",
+        "code": "if player.Character then\n\ttask.spawn(setup, player.Character)\nend\n\nplayer.CharacterAdded:Connect(setup)",
+        "note": "The jump counter is also reset for states listed in resetStates near the top of the script."
+      }
+    ]
+  }
 }
